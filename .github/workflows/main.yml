@@ -16,17 +16,14 @@ jobs:
           java-version: 11
           distribution: 'adopt' 
 
-      - name: Build and Test with Maven
-        run: |
-          cd Second_Demo
-          mvn clean install
+      - name: Build with Maven
+        run: mvn -B package -Pcoverage
 
-      - name: Run JaCoCo Code Coverage
-        run: mvn jacoco:report
-
-      - name: Upload Code Coverage Report
-        uses: actions/upload-artifact@v2
+      - name: Generate JaCoCo badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
         with:
-          name: jacoco-report
-          path: target/site/jacoco
+          badges-directory: badges
+          generate-branches-badge: true
+          generate-summary: true
 
