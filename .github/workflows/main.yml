@@ -17,7 +17,9 @@ jobs:
           distribution: 'adopt' 
 
       - name: Build and Test with Maven
-        run: mvn clean install
+        run: |
+          cd Second_Demo
+          mvn clean install
 
       - name: Run JaCoCo Code Coverage
         run: mvn jacoco:report
