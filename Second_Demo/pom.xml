@@ -1,52 +1,114 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+       <modelVersion>4.0.0</modelVersion>
+       <groupId>com.test</groupId>
+       <artifactId>spring-batch-helloworld</artifactId>
+       <version>20131227</version>
+       <name>spring batch hello world</name>
+       <packaging>jar</packaging>
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>demoid2</groupId>
-    <artifactId>Second_Demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>simple project</description>
+       <!-- pluginRepositories>
+              <pluginRepository>
+                     <id>numberformat-releases</id>
+                     <url>https://raw.github.com/numberformat/20130213/master/repo</url>
+              </pluginRepository>
+       </pluginRepositories-->
 
-    <build>
-        <plugins>
-            <!-- JaCoCo Maven Plugin Configuration -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version> <!-- Use the latest version of JaCoCo -->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <propertyName>jacoco.agent.argLine</propertyName>
-                </configuration>
-            </plugin>
+       <properties>
+              <spring.framework.version>3.2.1.RELEASE</spring.framework.version>
+              <spring.batch.version>3.0.0.M2</spring.batch.version>
+       </properties>
 
-            <!-- Maven Surefire Plugin Configuration -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.10</version>
-                <configuration>
-                    <argLine>-XX:-UseSplitVerifier ${jacoco.agent.argLine}</argLine>
-                </configuration>
-            </plugin>
+       <repositories>
+              <repository>
+                     <id>spring-s3</id>
+                     <name>Spring Maven MILESTONE Repository</name>
+                     <url>http://maven.springframework.org/milestone</url>
+              </repository>
+       </repositories>
+       <dependencies>
+              <dependency>
+                     <groupId>commons-lang</groupId>
+                     <artifactId>commons-lang</artifactId>
+                     <version>2.6</version>
+              </dependency>
+              <dependency>
+                     <groupId>org.springframework.batch</groupId>
+                     <artifactId>spring-batch-core</artifactId>
+                     <version>${spring.batch.version}</version>
+              </dependency>
+              <dependency>
+                     <groupId>org.springframework.batch</groupId>
+                     <artifactId>spring-batch-infrastructure</artifactId>
+                     <version>${spring.batch.version}</version>
+              </dependency>
+              <dependency>
+                     <groupId>log4j</groupId>
+                     <artifactId>log4j</artifactId>
+                     <version>1.2.17</version>
+              </dependency>
+              <dependency>
+                     <groupId>junit</groupId>
+                     <artifactId>junit</artifactId>
+                     <version>4.8.2</version>
+                     <scope>test</scope>
+              </dependency>
+              <dependency>
+                     <groupId>org.springframework</groupId>
+                     <artifactId>spring-tx</artifactId>
+                     <version>${spring.framework.version}</version>
+              </dependency>
+              <dependency>
+                     <groupId>org.springframework</groupId>
+                     <artifactId>spring-jdbc</artifactId>
+                     <version>${spring.framework.version}</version>
+              </dependency>
+              <dependency>
+                     <groupId>hsqldb</groupId>
+                     <artifactId>hsqldb</artifactId>
+                     <version>1.8.0.7</version>
+              </dependency>
+       </dependencies>
+<!-- added after Matteo recommendation-->
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.1</version>
+            <configuration>
+ <mainClass>org.springframework.batch.core.launch.support.CommandLineJobRunner</mainClass>
+            <arguments>
+                <argument>com.test.config.HelloWorldJobConfig</argument>
+                <argument>helloWorldJob</argument>
+            </arguments>
+            </configuration>
+        </plugin>
+</plugins>
+</build>
+       <!-- build>
+              <plugins>
+                     <plugin>
+                           <groupId>github.numberformat</groupId>
+                           <artifactId>blog-plugin</artifactId>
+                           <version>1.0-SNAPSHOT</version>
+                           <configuration>
+                                  <gitUrl>https://github.com/numberformat/wordpress/tree/master/${project.version}/${project.artifactId}</gitUrl>
+                           </configuration>
+                           <executions>
+                                  <execution>
+                                         <id>1</id>
+                                         <phase>site</phase>
+                                         <goals>
+                                                <goal>generate</goal>
+                                         </goals>
+                                  </execution>
+                           </executions>
+                     </plugin>
+              </plugins>
+       </build-->
 
-            <!-- Other plugins if any -->
-        </plugins>
-    </build>
-
+<!-- Run the application using:
+mvn compile exec:java -Dexec.mainClass=org.springframework.batch.core.launch.support.CommandLineJobRunner -Dexec.args="com.test.config.HelloWorldJobConfig helloWorldJob"
+-->
 </project>
-
